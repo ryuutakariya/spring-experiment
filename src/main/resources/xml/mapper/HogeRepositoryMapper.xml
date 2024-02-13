@@ -1,0 +1,51 @@
+<!-- 
+
+       Copyright 2015-2022 the original author or authors.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+ -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.HogeRepositoryMapper">
+    
+    <resultMap id="parentResultMap" type="com.example.demo.entity.Parent">
+        <id property="parentId" column="parent_id" />
+        <result property="parentName" column="parent_name" />
+        <collection property="childFirstList" javaType="java.util.List" ofType="com.example.demo.entity.ChildFirst">
+            <id property="childFirstId" column="child_first_id" />
+            <result property="childFirstName" column="child_first_name" />
+        </collection>
+        <collection property="childSecondList" javaType="java.util.List" ofType="com.example.demo.entity.ChildSecond">
+            <id property="childSecondId" column="child_second_id" />
+            <result property="childSecondName" column="child_second_name" />
+        </collection>
+    </resultMap>
+    
+    <select id="selectTest" resultMap="parentResultMap">
+            SELECT
+            parent.parent_id,
+            parent.parent_name,
+            child_first.child_first_id,
+            child_first.child_first_name,
+            child_second.child_second_id,
+            child_second.child_second_name
+        FROM
+            parent
+        LEFT JOIN
+            child_first ON parent.parent_id = child_first.parent_id
+        LEFT JOIN
+            child_second ON parent.parent_id = child_second.parent_id
+    </select>
+</mapper>
